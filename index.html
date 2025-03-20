@@ -118,6 +118,21 @@
             statusInput.value = statuses[(currentIndex + 1) % statuses.length];
         });
 
+
+        
+
+        fetch("http://localhost:8080/api/get-task?taskId=someTaskId")
+    .then(response => response.json())
+    .then(data => {
+      let newval =  document.getElementById("startDate").value = data.startDate; 
+        document.getElementById("dueDate").value = data.dueDate;
+        
+    })
+    
+    
+    .catch(error => console.error("Error fetching task:", error));
+ 
+
         document.getElementById("taskForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent default form submission
 
@@ -131,7 +146,7 @@
 
           // ✅ If valid, proceed with API request
     form.classList.add("was-validated");
-
+    
             const taskData = {
                 taskOwner: document.getElementById("taskOwner").value,
                 taskName: document.getElementById("taskName").value,
@@ -141,8 +156,11 @@
                 reminder: document.getElementById("reminder").value,
                 priority: document.getElementById("priority").value,
                 status: document.getElementById("status").value
+
+                
             };
 
+            console.log("Fetched Task Data:", taskData); 
             fetch("http://localhost:8080/api/add-task", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

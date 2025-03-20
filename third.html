@@ -14,7 +14,7 @@
     <nav class="nav nav-tabs">
         <a class="nav-link" href="#">My Tasks</a>
         <a class="nav-link" href="#">Track Tasks</a>
-        <a class="nav-link active" href="#">All Tasks</a>
+        <a class="nav-link active" href="http://127.0.0.1:5500/third.html">All Tasks</a>
         <a class="nav-link" href="http://127.0.0.1:5500/index.html">Form View</a>
     </nav>
 
@@ -121,6 +121,8 @@
 
 
 <script>
+
+    
     document.addEventListener("DOMContentLoaded", function () {
         fetch('http://localhost:8080/api/get-tasks')
             .then(response => response.json())
@@ -182,6 +184,17 @@ if (event.target.classList.contains("delete-task")) {
 }
 });
 
+function adjustDate(dateString) {
+                if (!dateString) return "";
+                
+                let date = new Date(dateString);  // Convert string to Date object
+                date.setDate(date.getDate() + 1); // Add 1 day to fix timezone shift
+
+                return date.toISOString().split('T')[0]; // Extract YYYY-MM-DD
+            }
+
+
+
 // ✅ Place this function before the event listener
 function loadTaskDetails(taskId) {
     fetch(`http://localhost:8080/api/get-task?taskId=${taskId}`)
@@ -195,8 +208,8 @@ function loadTaskDetails(taskId) {
             document.getElementById("updateTaskOwner").value = task.taskOwner;
 
             // ✅ Format dates correctly before assigning
-            document.getElementById("updateStartDate").value = formatDate(task.startDate);
-            document.getElementById("updateDueDate").value = formatDate(task.dueDate);
+            document.getElementById("updateStartDate").value = adjustDate(task.startDate);
+            document.getElementById("updateDueDate").value = adjustDate(task.dueDate);
             document.getElementById("updateReminder").value = formatDateTime(task.reminder);
 
             // ✅ Set Priority dropdown dynamically
@@ -237,6 +250,8 @@ function formatDateTime(dateTimeString) {
                 console.error("Error fetching tasks:", error);
             });
     });
+
+   
 
     function markTaskCompleted(taskId) {
     fetch(`http://localhost:8080/api/update-task-status/${taskId}`, { // ✅ Add `/api/`
