@@ -47,7 +47,6 @@
 
 
 const pool = require("./db.connection");
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
@@ -143,7 +142,6 @@ app.get("/api/get-task", (req, res) => {
 
 
 //third page
-
 // API to fetch all tasks
 app.get("/api/get-tasks", (req, res) => {
     const sql = "SELECT * FROM tasks";  // Make sure your database contains tasks

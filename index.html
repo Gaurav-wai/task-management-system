@@ -104,6 +104,46 @@
 
     <script>
 
+document.addEventListener("DOMContentLoaded", function () {
+    const dateInputs = ["startDate", "dueDate", "reminder"];
+
+    dateInputs.forEach(id => {
+        const input = document.getElementById(id);
+        input.addEventListener("input", function () {
+            validateYear(this);
+        });
+    });
+
+    function validateYear(input) {
+        const feedback = input.nextElementSibling;
+        const dateValue = input.value;
+
+        if (!dateValue) {
+            input.classList.add("is-invalid");
+            feedback.textContent = `${input.previousElementSibling.textContent} is required.`;
+            return false;
+        }
+
+        // Extract the year from the date
+        const year = dateValue.split("-")[0];
+
+        if (year.length !== 4) {
+            input.classList.add("is-invalid");
+            feedback.textContent = "Invalid year. Please enter a 4-digit year.";
+            return false;
+        }
+
+        // Remove error if valid
+        input.classList.remove("is-invalid");
+        input.classList.add("is-valid");
+        feedback.textContent = "";
+        return true;
+    }
+});
+
+
+
+
         document.getElementById("priorityBtn").addEventListener("click", function () {
             const priorityInput = document.getElementById("priority");
             const priorities = ["Moderate", "High", "Low"];
@@ -143,6 +183,8 @@
             form.classList.add("was-validated"); // Show Bootstrap validation
             return;
         }
+
+    
 
           // ✅ If valid, proceed with API request
     form.classList.add("was-validated");
@@ -201,7 +243,9 @@ document.getElementById("taskOwner").addEventListener("change", function () {
 
         });
 
-    </script>
+    
+
+    </script>     
 
 </body>
 
